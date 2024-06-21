@@ -1,0 +1,43 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div style="width: 100%; padding: 20px 10px; justify-content: center">
+  <h2 style="text-align: center">Edit Product</h2>
+  <form
+    style="text-align: center"
+    method="POST"
+    action=""
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="item-update-form">
+      <label>Product name</label>
+      {{form.name}}
+      <br />
+      <br />
+      <label>Price</label>
+      {{form.price}}
+      <br />
+      <br />
+      <label>Product Image</label>
+      {{form.picture}}
+      <br />
+      <br />
+      <label>In stock?</label>
+      {{form.in_stock}}
+      <br />
+      <br />
+
+      {% if form.errors or form.non_field_errors %}
+      <div>
+        {% for field in form %}
+        <strong>{{field.errors}}</strong>
+        {% endfor %}
+        <!--{{form.non_field_errors }}-->
+      </div>
+      {% endif %}
+      <br />
+      <button type="submit">Save</button>
+      <br />
+    </div>
+  </form>
+</div>
+{% endblock content %}

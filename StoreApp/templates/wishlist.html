@@ -1,0 +1,65 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<!--=== CONTENT ===-->
+<div id="wishlist-list">
+  <div style="padding-left: 30px; padding-top: 25px; margin-bottom: 30px">
+    <h1>Your Wishlist</h1>
+    <small>There are {{wishlist.count}} products in the wishlists</small>
+  </div>
+
+  <!--=== PRODUCT TABLE SECTION ===-->
+  <div class="wishlist-container col-4">
+    <table style="width: 95%; text-align: center; padding-left: 8px">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Stock Status</th>
+          <th>Action</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody style="width: 100%;">
+        {% for wish in wishlist %}
+        <tr>
+          <td>
+            <a href="{% url 'storeapp:detail' wish.product.slug %}">
+              <img src="{{wish.product.picture.url}}" />
+            </a>
+          </td>
+          <td>
+            <a href="{% url 'storeapp:detail' wish.product.slug %}"
+              >{{wish.product.name}}
+            </a>
+          </td>
+          <td>&#x20A6;{{wish.product.price}}</td>
+          <td>{{wish.product.in_stock}}</td>
+          <td class="wish-to-cart">
+            <!--== ADD TO CART BTN ==-->
+            <button type="button" value="{{wish.product.id}}">
+              Add to cart
+            </button>
+          </td>
+          <td>
+            <!--=== DELETE FROM WISHLIST ===-->
+            <button
+              data-wishlist-product="{{wish.id}}"
+              type="button"
+              class="wish-delete"
+            >
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+          </td>
+        </tr>
+        <!--== IF NO WISHLIST ==-->
+        {% empty %}
+        <tr>
+          No products available in your wishlist
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

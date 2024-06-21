@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!--=== CONTENT ===-->
+
+        <!--== CHECK OUT BUTTON ==--> 
+        <div class="checkoutbutton">
+            <a href="{% url 'storeapp:cart' %}" class="btn">Check Out &#8594</a>
+        </div>
+
+        <h2 style="text-align:center;">{{tag.name}}</h2>
+        <p style="text-align:center; margin-top:20px;"><strong>We found {{products.count}} items for you </strong></p>
+        <div class="women-holder col-4">
+            {% for product in products %}
+            <div class="women-container">
+                <div class="percentage-placement">
+                    <p><small>-{{product.get_percentage|floatformat:0}}%</small></p>
+                </div>
+                <a href="{% url 'storeapp:detail' product.slug %}"><img src="{{product.picture.url}}"/></a>
+                <p>
+                    {{product.name}}
+                </p>
+                <p class="price-of-things">
+                    <b>&#x20A6;{{ product.price }}</b>
+                    <s style="color:red;">&#x20A6;{{product.old_price}}</s>
+                </p>
+    
+
+            </div>
+            {% endfor %} 
+        </div>       
+
+
+{% endblock %}

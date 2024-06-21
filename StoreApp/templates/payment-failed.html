@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<!--=== CONTENT ===-->
+
+<div class="payment-failed-body">
+  <i class="fa fa-ban fa-4x" aria-hidden=""></i>
+  <ion-icon
+    style="width: 70%; height: 300px; color: red"
+    name="alert-circle-outline"
+  ></ion-icon>
+  <p style="text-align: center">Payment failed</p>
+  <div class="failed-btn-container">
+    <a href="{% url 'storeapp:home'%}"><button>Back to Homepage</button></a>
+  </div>
+</div>
+{% endblock content %}

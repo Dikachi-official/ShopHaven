@@ -1,0 +1,164 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<!--=== CONTENT ===-->
+<div class="full-display">
+  <!--=== LEFT SIDE BAR ===-->
+  <div class="v-detail-left">
+    <img src="{% static 'img/vendors/download (14).jpeg' %}" />
+    <div class="cat-sec-left">
+      <h3>Category</h3>
+      <hr />
+      <ul>
+        {% for category in categories %}
+        <li>
+          <a href="">{{products.picture.url}} {{ category.title }}
+            {{category.category.all.count}}</a>
+        </li>
+        <hr />
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!--=== NEXT SECTION ===-->
+    <div class="next-sec-left">
+      <ul>
+        {% if request.user.is_authenticated%}
+        <li>Hey {{request.user}}</li>
+        {% else %}
+        <li>Hey {{request.user}}</li>
+        {% endif %}
+      </ul>
+      <p>Other Sections</p>
+    </div>
+    <!--=== GAMES SECTION ===-->
+    <div class="game-sec-left">
+      <h3>Games</h3>
+      <a href="{% url 'storeapp:games' %}">
+        <img src="{% static 'img/playstation3.png' %}" />
+        <img src="{% static 'img/ps5.jpg' %}" />
+        <img src="{% static 'img/download.jfif' %}" />
+        <img src="{% static 'img/download (1).jfif' %}" />
+      </a>
+    </div>
+    <!--=== OUTFIT SECTION ===-->
+    <div class="outfit-sec-left">
+      <h3>Women</h3>
+      <a href="{% url 'storeapp:women' %}">
+        <img style="object-fit: contain" src="{% static 'img/women/women-trouser2.jpeg' %}"/>
+        <img src="{% static 'img/women/shoes3.jpeg' %}" />
+        <img src="{% static 'img/women/bag3.png' %}" />
+        <img src="{% static 'img/women/Miniatura.png' %}" />
+      </a>
+    </div>
+    <!--=== OUTFIT FOR WOMEN ===-->
+    <div class="outfit-sec-left">
+      <h3>Men</h3>
+      <a href="{% url 'storeapp:products' %}">
+        <img src="{% static 'img/luxury/blue-stylish-luxury.jpg.jfif' %}" />
+        <img src="{% static 'img/shirts/shirt-multi-color.jpg' %}" />
+        <img src="{% static 'img/polo/polostyle.jpg' %}" />
+        <img src="{% static 'img/trouser/plain-trouser.png' %}" />
+      </a>
+    </div>
+  </div>
+
+  <!--=== RIGHT SIDE BAR ===-->
+
+  <div class="v-detail-right">
+    <div class="v-cover-image">
+      {% if vendor.image %}
+      <img
+        src="{{vendor.image.url}}"
+        style="padding: 10px; border-radius: 10%"
+      />
+      {% endif %}
+    </div>
+
+
+
+    <!--==== VALIDATION FOR VENDOR ====-->
+    <div>
+      <div style="text-align:center; margin:15px 0;"> 
+        {% if vendor.user %} 
+        <h1>{{vendor.user| capfirst}} Store</h1>
+        {% endif %}
+        <h2>Brand name - {{vendor.name}}</h2>
+        <br/>
+        {% if request.user == vendor.user %}
+        <a class="vendor-btn" href="{% url 'storeapp:new-products' %}">Add Products</a>
+        {% endif %}
+        <br/>
+        <a class="converse-seller" href="{% url 'conversation:inbox' %}">
+          <small class="btn">Messages &#8594</small>
+        </a>  
+        <br/>
+        <div class='pink'></div>
+      </div>  
+    </div>
+  <!--==== END OF VENDOR VALIDATION ====-->
+
+
+
+
+
+    <div class="v-each-detail col-4">
+      {% for product in products %}
+      <div class="v-each-child">
+        <a href="{% url 'storeapp:product-detail' product.id %}">
+          <div class="percentage-placement">
+            <p><small>-{{product.get_percentage|floatformat:0}}%</small></p>
+          </div>
+          <img src="{{product.picture.url}}" />
+        </a>  
+        <ul>
+          <li><strong>{{product.name}}</strong></li>
+          <li style="font-size: 11px">
+            <strong>Price: &#x20A6 {{product.price}}</strong>
+            <s style="color:red;">&#x20A6;{{product.old_price}}</s>
+          </li>
+          <li><small>{{product.description}}</small></li>
+        </ul>
+        
+        
+
+        <!--== ADD TO CART BUTTON ==-->
+
+        <div class="col-4" style="display:flex; flex-direction:row; gap:10px; margin-top:10px;">
+          <button class="buttn" type="button" value={{product.id}}>Add to Cart
+            <!--<i class="btn__icon btn__icon--cart fa-solid fa-cart-shopping"></i>-->
+            <!--<i class="btn__icon btn__icon--box fa-solid fa-parachute-box"></i>-->
+            <!--<span class="btn__text btn__text--first">Add to cart</span>-->
+            <!--<span class="btn__text btn__text--second">Added</span>-->
+          </button>
+          <button type="button" data-product-item="{{product.id}}" class="add-to-wishlist buttn">
+            ❤
+          </button>
+        </div>
+
+
+        <!--<button class="butn" value="{{product.id}}">
+          <ion-icon
+            name="cart-outline"
+            style="color: red; width: 20px; height: 20px"
+          ></ion-icon>-->
+          <!--<i class="btn__icon btn__icon--cart P
+              fa-solid fa-cart-shopping"></i>-->
+          <!--<i class="btn__icon btn__icon--box fa-solid fa-parachute-box"></i>-->
+          <!--<span class="btn__text btn__text--first">Add to cart</span>-->
+          <!--<span class="btn__text btn__text--second">Added</span>-->
+        <!--</button>-->
+      </div>
+      <br />
+      <br />
+
+      {% endfor %}
+    </div>
+
+
+    
+  </div>
+</div>
+
+<!---===  END OF CONTENT  ===-->
+
+{% endblock content %}
