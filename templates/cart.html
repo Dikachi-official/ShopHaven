@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <body class="shoppingCartBody" id="cart-list">
+    <i class="fa fa-user" aria-hidden="true"></i>
+
+    <div class="shoppingCart">
+        <h3>Your Cart</h3>
+      
+        <div class="heading">
+          <tr>
+            <div class="name"><p>Image</p></div>
+            <div style="margin:0 5%;" class="name"><p>Product</p></div>
+            <div class="name"><p>Quantity</p></div>
+            <div class="name"><p>Delete</p></div>
+            <div class="name"><p>Update</p></div>
+            <div class="name"><p>Price</p></div>
+            
+          </tr>
+        </div>
+        {% if cartitems %}
+        <div class="itemContainer">
+          {% for item in cartitems %}
+
+          
+          {% if request.user.is_authenticated %}
+          <div class="item">
+            <div class="iteminfo">
+              <div class="p_img">
+                <a href="{% url 'storeapp:detail' item.product.slug %}"><img src="{{item.product.picture.url}}" alt="" /></a>
+              </div>              
+              <a href="{% url 'storeapp:detail' item.product.slug %}"><p>{{item.product.name}}</p></a>
+            </div>
+      
+            <div class="name">
+              <!--===<a class="quantity" href="#"><p class="borderquantity"> &#x2212; </p></a>==-->
+              <input type="number" id="quantity" class="product-qty-{{ product_id }}" placeholder="{{item.quantity}}"/>
+              <!--===<a class="quantity" href="#"><p class="borderquantity2"> &#x2b; </p></a>==-->
+            </div>
+            <!--<button type="submit" class="cartremove delete-product" data-product="{{item.product.id}}" style="width:60px;">
+              <ion-icon name="trash-outline"></ion-icon>
+              <strong>✖</strong>
+            </button>-->
+            <a href="{% url 'storeapp:delete-item' item.id  %}" class="cartremove delete-product" style="width:60px;"> 
+              <strong style="color:white;">Delete</strong>
+            </a>
+            <button class="update-product" data-product="{{ product_id }}" style="width:50px;">
+              <p>↻</p>
+            </button>
+            <div class="name"><p> &#x20A6;{{item.price}} </p></div>
+            <!--<div class="name"><p> &#x20A6;{{item.product.price}} </p></div>-->
+          </div>
+          {% else %}
+
+          <!--===  UNAUTHENTICATED USER  ===-->
+          <div class="item">
+            <div class="iteminfo">
+              <div class="p_img">
+                <a href="{% url 'storeapp:detail' item.product.slug %}"><img src="{{item.product.picture.url}}" alt="" /></a>
+              </div>              
+              <a href="{% url 'storeapp:detail' item.product.slug %}"><p>{{item.product.name}}</p></a>
+            </div>
+      
+            <div class="name">
+              <!--===<a class="quantity" href="#"><p class="borderquantity"> &#x2212; </p></a>==-->
+              <input type="number" style="width:40px;" id="quantity" class="product-qty-{{ product_id }}" placeholder="{{item.quantity}}"/>
+              <!--===<a class="quantity" href="#"><p class="borderquantity2"> &#x2b; </p></a>==-->
+            </div>
+            <a href="{% url 'storeapp:delete-item' item.id  %}" class="cartremove delete-product" style="width:60px;">
+              <strong style="color:white;">Delete</strong>
+            </a>
+            <button class="update-product" data-product="{{ product_id }}" style="width:50px;">
+              <!--<ion-icon name="refresh-outline"></ion-icon>-->
+              Update
+            </button>
+            <div class="name"><p> &#x20A6;{{item.price}} </p></div>
+            <!--<div class="name"><p> &#x20A6;{{item.product.price}} </p></div>-->
+          </div>
+          {% endif %}
+
+          {% endfor %}
+        </div>
+        {% else %}
+        <!-- PRINT A MESSAGE -->
+        <h5> Your Shopping Cart is Empty</h5>
+        <br/>
+        <!--<div class="continue-shopping-container">
+          <a href='{% url 'storeapp:home' %}'class="continue-shopping">Continue Shopping</a>
+        </div>-->  
+        {% endif %}
+      
+        <div class="pay-section">
+          <p><strong>Grand-Total: &#x20A6;{{cart.total_price}}</strong></p>
+          <a href="{% url 'storeapp:check-out' %}">
+            <small>Proceed →</small>
+          </a>
+        </div>
+      </div>
+
+
+
+      
+
+
+      <!--===  CHCEK OUT SECTION  ===-->
+      <section class="cart-second-section-cont">
+        <div class="nap-container">
+          <h4 style="font-size:25px; font-weight:900; text-align:center;">Bio Data</h4>
+          <form method="POST">
+            {% csrf_token %}
+            <div class="cartinputfield"> 
+              <div>
+                <label>Full Name</label>
+                <br/>
+                <input type="text" name="full_name" placeholder="Full Name"/>
+              </div>
+
+              <div>
+                <label>Email</label>
+                <br/>
+                <input type="email" name="email" placeholder="Email"/>
+              </div>
+
+              <div>
+                <label>Mobile</label>
+                <br/>
+                <input type="text" name="mobile" placeholder="Mobile"/>
+              </div>
+
+              <div>
+                <label>Address</label>
+                <br/>
+                <input type="text" name="address" placeholder="Address"/>
+              </div>
+
+              <div>
+                <label>City</label>
+                <br/>
+                <input type="text" name="city" placeholder="City"/>
+              </div>
+
+              <div>
+                <label>State</label>
+                <br/>
+                <input type="text" name="state" placeholder="State"/>
+              </div>
+
+              <div>
+                <label>Country</label>
+                <br/>
+                <input type="text" name="country" placeholder="Country"/>
+              </div>
+              <br/>
+            <div>
+
+            <button type="submit">Submit</button>
+                
+          </form>
+        </div>    
+      </section>
+
+      <div class="nah-container">
+        <div class="orm-container">
+          <div class="shoppingCartBody">
+            <!--<h2 style="color:black; margin-bottom:10px;">Checkout</h2>--> 
+          </div>
+          <div class="black"></div>
+          <div style="margin:15px 0px;">
+            <small style="font-size:10px;">Pay with Flutterwave</small>
+            <br/>
+            <button class="check-out-btn" type="button" onclick="makePayment()">
+              <small>Flutterwave Payment<small>
+            </button>
+          </div> 
+          <p>OR</p>
+          <div style="margin-top:30px;">           
+            <a href='{% url 'storeapp:home' %}'class="continue-shopping">Continue Shopping</a>
+          </div>
+        </div>  
+        <small><i>Powered By</i> FlutterWave | PayPal</small>  
+      </div> 
+
+    </div>
+  
+
+  </body>
+{% endblock content %}
+

@@ -1,0 +1,115 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
+<!--=== CONTENT ===-->
+<div class="billing-sec-container">
+  <div class="checkout-title">
+    <h1 style="margin-top: 20px;">Checkout</h1>
+    <p>You have {{cartitems|length}} product(s)</p>
+  </div>
+
+  <span class="coupon-holder">
+    <form method="GET">
+      <!--=== ERROR MESSAGE DISPLAY ===-->
+      {% if messages %}
+      <div class="errors">{% include 'alerts.html' %}</div>
+      {% endif %}
+      <input type="text" name="c-code" placeholder="Enter Coupon Code..." />
+      <button type="submit" class="">Apply</button>
+    </form>
+  </span>
+
+  <!--=== BILLING DETAILS ===-->
+  <h3 style="margin-left: 10px">Billing Details</h3>
+  <div class="billing-detail">
+    <div class="billing-info">
+      <div>
+        <label> Full name</label>
+        <br/>
+        <input
+          type="text"
+          name="fname"
+          value="{{ request.user.username|title }}"
+          class=""
+          placeholder="First name"
+        />
+      </div>
+      <br />
+
+      <div>
+        <label>Address</label>
+        <br/>
+        <input
+          type="text"
+          name="phone"
+          value="{{ active_address.mobile }}"
+          class=""
+          placeholder="Phone"
+        />
+      </div>
+      <br />
+
+      <div>
+        <label style="margin-right: 5px; margin-top: 3px"
+          ><strong>Shipping Address</strong></label>
+        <br/>
+        <input
+          type="text"
+          name="billing_address"
+          value="{{ active_address.address }}"
+          class=""
+          placeholder="Address"
+        />
+      </div>
+      <br />
+      <small
+        >Details of your available information for shipping, to make changes
+        visit
+        <a href="{% url 'storeapp:dashboard' %}"><i>dashboard</i></a></small
+      >
+    </div>
+
+    <div class="order-list">
+      <div style="display: flex; flex-direction: row; width: 100%">
+        <h3 style="width: 30%">Order</h3>
+        <h5 style="width: 30%; align-items: right; align-self: right">
+          <strong>Subtotal:</strong>{{cart.total_price}}
+        </h5>
+      </div>
+      <hr />
+      <br />
+      <div class="order-list-child">
+        <div class="order-list-grandchild">
+          <table>
+            <!--=== TABLE HEAD ===-->
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+            <!--=== TABLE BODY ===-->
+            {% for item in cartitems %}
+            <tr>
+              <td>
+                <img
+                  style="border-radius: 4px; object-fit: contain"
+                  src="{{item.product.picture.url}}"
+                />
+              </td>
+              <td>{{item.product.name}}</td>
+              <td>{{item.quantity}}</td>
+              <td>{{item.price}}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="clicky-time" style="margin-bottom: 30px">
+    <h3 style="margin-bottom: 5px">PayPal Payment</h3>
+    {{paypal_payment_button.render}}
+  </div>
+</div>
+{% endblock content %}

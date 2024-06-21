@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %} 
+
+
+    <!--=== SEARCH BAR ===-->
+    <div class="holder"></div>
+    {% if messages %}
+        {% for message in messages%}
+        <div class="alert alert-{{message.tags}}">
+            <strong>{{message}}</strong>
+        </div>  
+    {% endfor %}
+    {% endif %}
+    <div>
+        {% include 'search.html' %}
+    </div>    
+    <!--== MIRABEL==-->
+
+
+
+    <!--== CHECK OUT BUTTON ==--> 
+    <div class="checkoutbutton">
+        <a href="{% url 'storeapp:cart' %}" class="btn">Check Out &#8594</a>
+    </div>
+
+
+
+    <h2 class="disturb">Products</h2>
+
+    
+    <!--==== SECTION TO FILTER BY VENDOR, CATEGORY ====-->
+    <div style="margin-bottom:30px;">
+        {% include 'filter-sec.html' %}
+    </div>
+    <!--==== END OF THE SECTION ====-->
+
+
+            <!---Latest products-->
+    <!--<div class="small-container">-->
+    <div style="text-align:center;">
+        <p style="font-weight:bold; margin-top:20px;">We have {{products.count}} products</p>
+    </div> 
+    <br/>
+    
+    
+
+    <div class="women-holder" id="filtered-product">
+        {% for product in products %}
+        <div class="women-container ">   
+            <div class="percentage-placement">
+                <p><small>-{{product.get_percentage|floatformat:0}}%</small></p>
+            </div> 
+            <a href="{% url 'storeapp:detail' product.slug  %}">
+                <img src="{{ product.picture.url }}">
+            </a>
+            <h4><b>{{ product.name }}</b></h4>
+            <p> Category: <i>{{product.category.title}}</i></p>
+            <div class="rating">
+                <i class="fa fa-star" aria-hidden="true"></i>
+            </div>
+            <p class="price-of-things">
+                <b>&#x20A6;{{ product.price }}</b>
+                <s style="color:red;">&#x20A6;{{product.old_price}}</s>
+            </p>
+
+            <!--<input class="{{product.id}}" value="{{product.id}}"/>-->
+
+            <!--== ADD TO CART BUTTON ==-->
+            <div class="col-4" style="display:flex; flex-direction:row; gap:6px;">
+                <button class="butn" type="button" value={{product.id}}>Add to Cart
+                    <!--<i class="btn__icon btn__icon--cart fa-solid fa-cart-shopping"></i>-->
+                    <!--<i class="btn__icon btn__icon--box fa-solid fa-parachute-box"></i>-->
+                    <!--<span class="btn__text btn__text--first">Add to cart</span>-->
+                    <!--<span class="btn__text btn__text--second">Added</span>-->
+                </button>
+                <button type="button" data-product-item="{{product.id}}" class="add-to-wishlist">
+                    ❤
+                </button>
+            </div>    
+            <br>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+    <!--</div>--> 
+    <!--= End of latest Products =-->
+
+
+    <div class="top">
+        <a href="#top" class="top">Top &#x2191;</a>
+    </div>
+
+{% endblock content %}    

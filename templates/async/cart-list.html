@@ -1,0 +1,107 @@
+<body class="shoppingCartBody" id="cart-list">
+  <i class="fa fa-user" aria-hidden="true"></i>
+
+  <div class="shoppingCart">
+      <h2>Billing</h2>
+    
+      <div class="heading">
+        <tr>
+          <div class="p_name"><h4>Product</h4></div>
+          <div class="name"><h4>Quantity</h4></div>
+          <div class="name"><h4>Price</h4></div>
+        </tr>
+      </div>
+      {% if cartitems %}
+      <div class="itemContainer">
+        {% for item in cartitems %}
+
+        
+        {% if request.user.is_authenticated %}
+        <div class="item">
+          <div class="iteminfo">
+            <div class="p_img">
+              <a href="{% url 'storeapp:detail' item.product.slug %}"><img src="{{item.product.picture.url}}" alt="" /></a>
+            </div>              
+            <a href="{% url 'storeapp:detail' item.product.slug %}"><p>{{item.product.name}}</p></a>
+          </div>
+    
+          <div class="name">
+            <!--===<a class="quantity" href="#"><p class="borderquantity"> &#x2212; </p></a>==-->
+            <input type="number" style="width:40px;" id="quantity" class="product-qty-{{ product_id }}" placeholder="{{item.quantity}}"/>
+            <!--===<a class="quantity" href="#"><p class="borderquantity2"> &#x2b; </p></a>==-->
+          </div>
+          <button type="button" class="cartremove delete-product" data-product="{{item.product.id}}" style="width:60px;">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
+          <button class="update-product" data-product="{{ product_id }}" style="width:50px;">
+            <!--<ion-icon name="refresh-outline"></ion-icon>-->
+            Update
+          </button>
+          <div class="name"><p> &#x20A6;{{item.price}} </p></div>
+          <!--<div class="name"><p> &#x20A6;{{item.product.price}} </p></div>-->
+        </div>
+        {% else %}
+
+        <!--===  UNAUTHENTICATED USER  ===-->
+        <div class="item">
+          <div class="iteminfo">
+            <div class="p_img">
+              <a href="{% url 'storeapp:detail' item.product.slug %}"><img src="{{item.product.picture.url}}" alt="" /></a>
+            </div>              
+            <a href="{% url 'storeapp:detail' item.product.slug %}"><p>{{item.product.name}}</p></a>
+          </div>
+    
+          <div class="name">
+            <!--===<a class="quantity" href="#"><p class="borderquantity"> &#x2212; </p></a>==-->
+            <input type="number" style="width:40px;" id="quantity" class="product-qty-{{ product_id }}" placeholder="{{item.quantity}}"/>
+            <!--===<a class="quantity" href="#"><p class="borderquantity2"> &#x2b; </p></a>==-->
+          </div>
+          <button class="cartremove delete-product" data-product="{{item.product.id}}" style="width:60px;">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
+          <button class="update-product" data-product="{{ product_id }}" style="width:50px;">
+            <!--<ion-icon name="refresh-outline"></ion-icon>-->
+            Update
+          </button>
+          <div class="name"><p> &#x20A6;{{item.price}} </p></div>
+          <!--<div class="name"><p> &#x20A6;{{item.product.price}} </p></div>-->
+        </div>
+        {% endif %}
+
+        {% endfor %}
+      </div>
+      {% else %}
+      <!-- PRINT A MESSAGE -->
+      <h5> Your Shopping Cart is Empty</h5>
+      <br/>
+      <!--<div class="continue-shopping-container">
+        <a href='{% url 'storeapp:home' %}'class="continue-shopping">Continue Shopping</a>
+      </div>-->  
+      {% endif %}
+    
+      <div class="pay-section">
+        <h3>Grand-Total: &#x20A6;{{cart.total_price}}</h3>
+        <button type="button" onclick="makePayment()">Pay</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!--===  CHCEK OUT SECTION  ===-->
+  <div class="map-container">
+    <div class="form-container">
+      <div class="shoppingCartBody">
+        <h2 style="color:black; margin-bottom:10px;">Checkout</h2>
+        <a  class="check-out-btn" href="{% url 'storeapp:check-out' %}">checkout</a>
+      </div>
+      <div class="yellow"></div>
+      <div style="margin-top:30px;">           
+        <a href='{% url 'storeapp:home' %}'class="continue-shopping">Continue Shopping</a>
+      </div>
+    </div>  
+    <small><i>Powered By</i> FlutterWave | PayPal</small>  
+  </div> 
+
+
+</body>

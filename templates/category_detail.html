@@ -1,0 +1,109 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<!--==== CONTENT OF CATEGORY DETAIL VIEW ====-->
+
+
+
+ <!--== CHECK OUT BUTTON ==--> 
+ <div class="checkoutbutton">
+    <a href="{% url 'storeapp:cart' %}" class="btn">Check Out &#8594</a>
+</div>
+
+<!---Latest products-->
+<h2 class="disturb">{{category.title}} Category</h2>
+<div class="detail-holder">
+    <div class="detail-left">
+        <div class="detail-left-child">
+            <h3>Delivery</h3>
+            <p>
+                Address : {{products.vendor.address}}
+            </p>
+            <br/>
+            <hr/> 
+            <br/>   
+            <h3>Return & Warranty</h3>
+            <p>
+                Rating : {{products.vendor.authentic_rating}} authentic
+                <br/>    
+                {{products.vendor.days_return}}Days Return
+                <br/>   
+                {{products.vendor.warranty_period}} warranty
+                <br/>
+                {{products.shipping_on_time}} days
+            </p>  
+        </div>
+        <!--=== VENDOR SECTION ===-->
+        <h3 class="v-left-sec">Vendors</h3>
+        <div class="detail-left-child2">
+            <div class="detail-left-grandchild">
+                {% for vendor in vendors %}
+                <a href="{% url 'storeapp:vendor-detail' vendor.id %}">
+                    {% if vendor.image %}
+                    <img src="{{vendor.image.url}}">
+                    {% endif %}
+                </a>
+                {% endfor %}
+            </div>
+        </div>  
+        
+        <!--=== CATEGORY SECTION ===-->
+        <div class="detail-left-child">
+            <h3>Categories</h3>
+            {% for category in categories %}
+            <ul>
+                <li><a href="{% url 'storeapp:category_detail' category.id  %}"><img src="{{category.image.url}}"/> <small>{{category.title}} {{category.products.count}}</a></small></li>
+                <hr/>
+            </ul>   
+            {% endfor %} 
+        </div>    
+    </div>    
+
+
+
+
+
+
+
+    <!--==== RIGHT HAND SIDE DISPLAY SECTION ====-->
+    <div class="detail-containar">
+        <!--<div class="percentage-placement">
+            <p><small>-{{product.get_percentage|floatformat:0}}%</small></p>
+        </div>-->
+
+        <div class="cat-dis-cont">
+            {% for cat in cat_products %}
+            <div class="cat-dis-child">
+                <a href="{% url 'storeapp:detail' cat.slug %}">
+                    <img src="{{ cat.picture.url }}">
+                    <p><b>{{cat.name}}</b></p>
+                </a>
+            </div>
+            {% endfor %} 
+        </div>    
+        <!--<img src="{{ category.image.url }}">
+        <h4><b>{{ category.title }}</b></h4>-->
+        
+        <br>
+        <br/>    
+        
+        
+
+        <!--==== RELATED PRODUCTS SECTION ====-->
+        <!--{% if rp %}
+        <div class="related_products">
+            <h4><b>Related Products</b></h4>
+            {% for rps in rp %}
+            {% if forloop.counter < 7 %}
+            <a href="{% url 'storeapp:detail' rps.id %}">
+                <img style="width:50px; height:50px; margin-bottom:30px;" src="{{rps.picture.url}}"/>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}-->
+    </div>
+</div>
+
+
+
+
+{% endblock content %}

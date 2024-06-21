@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="dash-sec">
+  <h1>Vendor Application Form</h1>
+  <div class="dash-flex-containerrr">
+    <div class="dash-child">
+      <!--<div class="dash-logo">
+        <img src="" />
+      </div>-->
+      <ul>
+        <li 
+        style="border-radius: 3px; padding: 3px; background: grey;
+        color: white;">Overview</li>
+        <hr />
+        <li><a href="#profff">Profile</a></li>
+        <hr />
+        <li><a href="{% url 'userapp:signout' %}">Logout</a></li>
+      </ul>
+    </div>  
+
+    <!--=== WIDE SECTION ===-->
+
+    <div class="dash-profileee">
+      <h3 style="text-align: center" id="profff">Input Details</h3>
+      <hr />
+      <div class="dash-parent-profile-info">
+        <div class="dash-profiler-pic">
+          {% if profile.image %}
+          <img src="{{profile.image.url}}" />
+          {% else %}
+          <!--=== DUMMY IMAGE PLACEMENT ===-->
+          <img src="{% static 'img/dummy-profile-icon.jpg' %}" />
+          {% endif %}
+        </div>
+        <!--=== USER DETAIL ===-->
+        <div class="dash-profiler-info">
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div>
+              <strong>{{form.errors}}</strong>
+            </div>
+            {% endif %}
+            <div>
+              <label>Company name<label>
+              {{form.name}} 
+            </div>   
+            <div>  
+              <label>Description<label>
+              {{form.description}}
+            </div>
+            <div>
+              <label>Image</label>
+              {{form.image}}
+            </div>  
+            <div>
+              <label>Cover-image</label>
+              {{form.cover_image}}
+            </div>    
+            <br />
+            <button class="edit-profile" type="submit"><small>Save changes</small></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>  
+</div>
+{% endblock content %}
