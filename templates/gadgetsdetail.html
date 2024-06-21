@@ -1,0 +1,213 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block content %}
+
+   <!--== CHECK OUT BUTTON ==--> 
+   <div class="checkoutbutton">
+    <a href="{% url 'storeapp:cart' %}" class="btn">Check Out &#8594</a>
+  </div>
+
+
+   <!--== CHECK OUT BUTTON ==--> 
+   <div class="checkoutbutton">
+    <a href="{% url 'storeapp:cart' %}" class="btn">Check Out &#8594</a>
+</div>
+
+
+<!---Latest products-->
+<h2 class="disturb">Product</h2>
+<div class="detail-holder">
+    <div class="detail-left">
+        <div class="detail-left-child">
+            <h3>Return & Warranty</h3>
+            <p>
+                Rating : {{products.vendor.authentic_rating}} authentic
+                <br/>    
+                {{products.vendor.days_return}}Days Return
+                <br/>   
+                {{products.vendor.warranty_period}} warranty
+                <br/>
+                {{products.shipping_on_time}} days
+            </p>  
+        </div>
+        <!--=== VENDOR SECTION ===-->
+        <h3 class="v-left-sec">Vendors</h3>
+        <div class="detail-left-child2">
+            <div class="detail-left-grandchild">
+                {% for vendor in vendors %}
+                <a href="{% url 'storeapp:vendor-detail' vendor.id %}">
+                    {% if vendor.image %}
+                    <img src="{{vendor.image.url}}">
+                    {% endif %}
+                </a>
+                {% endfor %}
+            </div>
+        </div>  
+        
+        <!--=== CATEGORY SECTION ===-->
+        <div class="detail-left-child">
+            <h3>Categories</h3>
+            {% for category in categories %}
+            <ul>
+                <li><a href="{% url 'storeapp:categories' %}"><img src="{{category.image.url}}"/> <small>{{category.title}} {{category.products.count}}</a></small></li>
+                <hr/>
+            </ul>   
+            {% endfor %} 
+        </div>    
+    </div>    
+
+
+    <div class="detail-container col-4">
+        <div class="percentage-placement">
+            <p><small>-{{gadget.get_percentage|floatformat:0}}%</small></p>
+        </div>    
+        <img src="{{ gadget.picture.url }}">
+        <h4><b>{{ gadget.name }}</b></h4>
+        <div class="rating">
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+        </div>
+        <p>
+            <b>&#x20A6;{{ gadget.price }}</b>
+            <s style="color:red;">&#x20A6;{{gadget.old_price}}</s>
+        </p>
+        <p>
+            <strong>Tags:</strong> {% for tag in gadget.tags.all %}<a href="{% url 'storeapp:tags' tag.slug %}">{{tag.name}}</a> {% endfor %}
+        </p>    
+        <br>
+
+        <!--== ADD TO CART BUTTON ==-->
+        <button class="butn" value="{{gadget.id}}">Add to Cart
+            <!--<i class="btn__icon btn__icon--cart fa-solid fa-cart-shopping"></i>-->
+            <!--<i class="btn__icon btn__icon--box fa-solid fa-parachute-box"></i>-->
+            <!--<span class="btn__text btn__text--first">Add to cart</span>-->
+            <!--<span class="btn__text btn__text--second">Added</span>-->
+        </button>
+        <br>
+        <span class="beside"><p><b>Product Detail</b></p>{{gadget.description}}</span>
+        <br/>
+        <h3 style="text-align:center; margin-top:20px;">Delivery</h3>
+        <p>
+            Address : {{gadget.address}}
+        </p>
+        <br/>
+        <hr/> 
+        <br/> 
+
+
+
+        <!--==== RECENTLY VIEW PRODUCTS ====-->
+        <div class="recent-container">
+            <h4><b>Recently viewed</b></h4>
+            <div class="recent-items">
+                {% for viewed_gadgets in recently_viewed_gadgets %} 
+                <a href="{% url 'storeapp:gadgetsdetail' viewed_gadgets.slug %}">
+                    <img style="object-fit:contain;" src="{{ viewed_gadgets.picture.url }}">
+                </a>    
+                {% endfor %}
+            </div>    
+        </div>  
+        
+
+        <!--==== RELATED PRODUCTS SECTION ====-->
+        {% if rp %}
+        <div class="related_products">
+            <h4><b>Related Products</b></h4>
+            {% for rps in rp %}
+            {% if forloop.counter < 7 %}
+            <a href="{% url 'storeapp:gadgetsdetail' rps.slug%}">
+                <img style="width:50px; height:50px; margin-bottom:30px; object-fit:contain;" src="{{rps.picture.url}}"/>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        
+
+        <!--==== REVIEW SECTION ====-->
+        <div class="review">
+            <h4><b>Reviews({{reviews.count}})</b></h4>
+            <br/>
+            {% for review in reviews%}
+            <div class="review-section">
+                <div class="review-child">
+                    {% if review.user.profile.image %}
+                    <img src="{{review.user.profile.image.url}}" style="object-fit: contain"/>
+                    {% else %}
+                    <!--=== DUMMY IMAGE PLACEMENT ===-->
+                    <img src="{% static 'img/women/anonymous.png' %}"/>
+                    {% endif %}
+                    <span><b>{{review.user|capfirst}}</b>        ||{{review.number_of_likes}} Likes</span></span>
+                    <br/>
+                    <span class="review-date">{{review.date|date:"d,M, Y"}}</span>
+                    <!--==== TO GET THE SPECIFIC NUMBER OF STAR REVIEWS ====-->
+                    <div>
+                        {% for star in review.rating|ljust:review.rating %}
+                            ★
+                        {% endfor %}
+                    </div>
+                    <span style="display:flex; flex-direction:row; gap:10px;">
+                        <p>{{review.review}}  </p>
+                        {% if request.user in review.likes.all %}
+                        <a href="{% url 'storeapp:review_likes' review.id %}">
+                            Unlike
+                        </a>
+                        {% else %}
+                        <a href="{% url 'storeapp:review_likes' review.id %}">
+                            Like
+                        </a>
+                        {% endif %}
+                    </span>
+                    <hr/>
+                </div>
+                <br/>    
+            </div>
+            {% endfor %}
+            <div class="rating-section">
+                <h4><b>Customer Reviews</b></h4>
+                <br/>
+                <h6> 
+                    {% if average_rating.rating == None %}
+                    0
+                    {% else %}
+                    {{average_rating.rating|floatformat:1}}
+                    {% endif %} out of 5.0 
+
+                </h6>
+            </div>       
+        </div>
+
+
+        <!--=== COMMENT SECTION ===-->
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'storeapp:ajax_add_review' gadget.id %}" id="commentForm" method="POST">
+            {% csrf_token %}
+            <h4 class="add-review">Add a review</h4>
+            <br/>
+            <p id="review-res"></p>
+            <div class="review-box hide-comment-form">
+                {{review_form.review}}
+            </div>  
+            
+            <div class="review-box hide-comment-form">
+                {{review_form.rating}}
+            </div> 
+            <br/>
+            <!---->
+            <button class="review-button hide-comment-form" type="submit" value="Submit Review">
+                Submit Review
+            </button>    
+        </form> 
+        {% endif %}
+
+
+    </div>
+</div>
+
+{% endblock %}
+
+

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <div class="holder"></div>
+    {% if messages %}
+    {% for message in messages%}
+    <div class="alert alert-{{message.tags}}">
+        <strong>{{message}}</strong>
+    </div>  
+    {% endfor %}
+    {% endif %}
+
+    <!--=== SEARCH BAR ===-->
+    <div>
+        {% include 'search.html' %}
+    </div>
+
+
+        <!--== CHECK OUT BUTTON ==--> 
+        <div class="checkoutbutton">
+            <a href="{% url 'storeapp:cart' %}" class="btn">Check Out &#8594</a>
+        </div>
+
+
+
+
+        <!---Latest products-->
+        <h2 class="disturb">Gadgets</h2>
+
+
+
+
+        <!--=== FILTER SECTION ===-->
+        <div style="margin-bottom:30px; width:100%; height:auto;">
+            {% include "filter-sec.html" %}
+        </div>
+        <!--==== END OF THE SECTION ====-->
+
+
+
+
+        <div style="text-align:center; margin-bottom:25px;">
+            <p style="font-weight:bold;">We have {{products.count}} products</p>
+        </div> 
+        <div class="women-holder col-4">
+            {% for gadget in products %}
+            <div class="women-container">
+                <div class="percentage-placement">
+                    <p><small>-{{gadget.get_percentage|floatformat:0}}%</small></p>
+                </div> 
+                <a href="{%url 'storeapp:gadgetsdetail' gadget.slug %}">
+                    <img src="{{ gadget.picture.url }}">
+                </a>    
+                <h4><b>{{ gadget.name }}</b></h4>
+                <p> Category: <i>{{gadget.category.title}}</i></p>
+                <div class="rating">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </div>
+                <p class="price-of-things">
+                    <b>&#x20A6;{{ gadget.price }}</b>
+                    <s style="color:red;">&#x20A6;{{gadget.old_price}}</s>
+
+                </p>
+                  <!--== ADD TO CART BUTTON ==-->
+                <div style="display:flex; flex-direction:row; gap:10px;" >  
+                    <button class="butn" value={{gadget.id}}>Add to Cart
+                        <!--<i class="btn__icon btn__icon--cart fa-solid fa-cart-shopping"></i>-->
+                        <!--<i class="btn__icon btn__icon--box fa-solid fa-parachute-box"></i>-->
+                        <!--<span class="btn__text btn__text--first">Add to cart</span>-->
+                        <!--<span class="btn__text btn__text--second">Added</span>-->
+                    </button>
+                    <button type="button" data-product-item="{{gadget.id}}" class="add-to-wishlist">
+                        ❤
+                    </button>
+                </div>
+                <br>
+                <br>
+            </div>  
+            {% endfor %} 
+        </div>
+        <div class="top">
+            <a href="#top" class="top">Top &#x2191;</a>
+        </div>
+
+{% endblock content %}        
+     
+    
+ 
